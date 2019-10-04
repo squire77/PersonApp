@@ -1,25 +1,30 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import PersonList from './PersonList'
+import PersonEdit from './PersonEdit'
 
 class App extends Component {
+  
+  state = {
+    people: [{firstName: "Lauren", lastName: "Peca"}],
+    selectedView: 'PersonList',
+    //selectedPerson: undefined
+  }
+
+  onEdit = (person) => {
+    this.setState({selectedView : 'PersonEdit', selectedPerson : person})
+  }
+
+  onSubmit = (person) => {
+    console.log(person)
+    this.setState({selectedView : 'PersonList', /*selectedPerson : undefined,*/ people: [person]})
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        {this.state.people.length === 0 ? "You have no people." : this.state.selectedView === 'PersonList'
+            ? <PersonList people={this.state.people} onEdit={this.onEdit}/> : <PersonEdit person={this.state.selectedPerson} submit={this.onSubmit}/>}
       </div>
     );
   }
